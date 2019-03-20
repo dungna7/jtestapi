@@ -21,35 +21,22 @@ use Cake\Http\Exception\NotFoundException;
 
 $this->layout = false;
 
-if (!Configure::read('debug')) :
-    throw new NotFoundException(
-        'Please replace src/Template/Pages/home.ctp with your own version or re-enable debug mode.'
-    );
-endif;
-
 $cakeDescription = 'CakePHP: the rapid development PHP framework';
 ?>
 <!DOCTYPE html>
-<html>
-<head>
-    <?= $this->Html->charset() ?>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<html><head>
+    <meta charset="utf-8">    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
-        <?= $cakeDescription ?>
-    </title>
+        CakePHP: the rapid development PHP framework    </title>
 
-    <?= $this->Html->meta('icon') ?>
-    <?= $this->Html->css('base.css') ?>
-    <?= $this->Html->css('style.css') ?>
-    <?= $this->Html->css('home.css') ?>
-    <link href="https://fonts.googleapis.com/css?family=Raleway:500i|Roboto:300,400,700|Roboto+Mono" rel="stylesheet">
+    <link href="/favicon.ico" type="image/x-icon" rel="icon"><link href="/favicon.ico" type="image/x-icon" rel="shortcut icon">    <link rel="stylesheet" href="/css/base.css">    <link rel="stylesheet" href="/css/style.css">    <link rel="stylesheet" href="/css/home.css">    <link href="https://fonts.googleapis.com/css?family=Raleway:500i|Roboto:300,400,700|Roboto+Mono" rel="stylesheet">
 </head>
 <body class="home">
 
 <header class="row">
-    <div class="header-image"><?= $this->Html->image('cake.logo.svg') ?></div>
+    <div class="header-image"><img src="/img/cake.logo.svg" alt=""></div>
     <div class="header-title">
-        <h1>Welcome to CakePHP <?= Configure::version() ?> Red Velvet. Build fast. Grow solid.</h1>
+        <h1>Welcome to CakePHP 3.7.5 Red Velvet. Build fast. Grow solid.</h1>
     </div>
 </header>
 
@@ -61,110 +48,72 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
         <div id="url-rewriting-warning" class="alert url-rewriting">
             <ul>
                 <li class="bullet problem">
-                    URL rewriting is not properly configured on your server.<br />
-                    1) <a target="_blank" href="https://book.cakephp.org/3.0/en/installation.html#url-rewriting">Help me configure it</a><br />
+                    URL rewriting is not properly configured on your server.<br>
+                    1) <a target="_blank" href="https://book.cakephp.org/3.0/en/installation.html#url-rewriting">Help me configure it</a><br>
                     2) <a target="_blank" href="https://book.cakephp.org/3.0/en/development/configuration.html#general-configuration">I don't / can't use URL rewriting</a>
                 </li>
             </ul>
         </div>
-        <?php Debugger::checkSecurityKeys(); ?>
-    </div>
+        <pre class="cake-error"><a href="javascript:void(0);" onclick="document.getElementById('cakeErr5c9200c1e0a4d-trace').style.display = (document.getElementById('cakeErr5c9200c1e0a4d-trace').style.display == 'none' ? '' : 'none');"><b>Notice</b> (1024)</a>: Please change the value of 'Security.salt' in ROOT/config/app.php to a salt value specific to your application. [<b>CORE\src\Error\Debugger.php</b>, line <b>963</b>]<div id="cakeErr5c9200c1e0a4d-trace" class="cake-stack-trace" style="display: none;"><a href="javascript:void(0);" onclick="document.getElementById('cakeErr5c9200c1e0a4d-code').style.display = (document.getElementById('cakeErr5c9200c1e0a4d-code').style.display == 'none' ? '' : 'none')">Code</a> <a href="javascript:void(0);" onclick="document.getElementById('cakeErr5c9200c1e0a4d-context').style.display = (document.getElementById('cakeErr5c9200c1e0a4d-context').style.display == 'none' ? '' : 'none')">Context</a><pre id="cakeErr5c9200c1e0a4d-code" class="cake-code-dump" style="display: none;"><code><span style="color: #000000"><span style="color: #0000BB">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">if&nbsp;(</span><span style="color: #0000BB">Security</span><span style="color: #007700">::</span><span style="color: #0000BB">getSalt</span><span style="color: #007700">()&nbsp;===&nbsp;</span><span style="color: #DD0000">'__SALT__'</span><span style="color: #007700">)&nbsp;{</span></span></code>
+<span class="code-highlight"><code><span style="color: #000000"><span style="color: #0000BB">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;trigger_error</span><span style="color: #007700">(</span><span style="color: #0000BB">sprintf</span><span style="color: #007700">(</span><span style="color: #DD0000">'Please&nbsp;change&nbsp;the&nbsp;value&nbsp;of&nbsp;%s&nbsp;in&nbsp;%s&nbsp;to&nbsp;a&nbsp;salt&nbsp;value&nbsp;specific&nbsp;to&nbsp;your&nbsp;application.'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'\'Security.salt\''</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'ROOT/config/app.php'</span><span style="color: #007700">),&nbsp;</span><span style="color: #0000BB">E_USER_NOTICE</span><span style="color: #007700">);</span></span></code></span>
+<code><span style="color: #000000"><span style="color: #0000BB">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">}</span></span></code></pre><pre class="stack-trace">Cake\Error\Debugger::checkSecurityKeys() - CORE\src\Error\Debugger.php, line 963
+include - APP/Template\Pages\home.ctp, line 70
+Cake\View\View::_evaluate() - CORE\src\View\View.php, line 1413
+Cake\View\View::_render() - CORE\src\View\View.php, line 1374
+Cake\View\View::render() - CORE\src\View\View.php, line 880
+Cake\Controller\Controller::render() - CORE\src\Controller\Controller.php, line 791
+App\Controller\PagesController::display() - APP/Controller\PagesController.php, line 61
+Cake\Controller\Controller::invokeAction() - CORE\src\Controller\Controller.php, line 610
+Cake\Http\ActionDispatcher::_invoke() - CORE\src\Http\ActionDispatcher.php, line 120
+Cake\Http\ActionDispatcher::dispatch() - CORE\src\Http\ActionDispatcher.php, line 94
+Cake\Http\BaseApplication::__invoke() - CORE\src\Http\BaseApplication.php, line 235
+Cake\Http\Runner::__invoke() - CORE\src\Http\Runner.php, line 65
+Cake\Http\Runner::__invoke() - CORE\src\Http\Runner.php, line 65
+Cake\Http\Middleware\CsrfProtectionMiddleware::__invoke() - CORE\src\Http\Middleware\CsrfProtectionMiddleware.php, line 108
+Cake\Http\Runner::__invoke() - CORE\src\Http\Runner.php, line 65
+Cake\Http\Runner::run() - CORE\src\Http\Runner.php, line 51</pre></div></pre>    </div>
 </div>
 
 <div class="row">
     <div class="columns large-6">
         <h4>Environment</h4>
         <ul>
-        <?php if (version_compare(PHP_VERSION, '5.6.0', '>=')) : ?>
-            <li class="bullet success">Your version of PHP is 5.6.0 or higher (detected <?= PHP_VERSION ?>).</li>
-        <?php else : ?>
-            <li class="bullet problem">Your version of PHP is too low. You need PHP 5.6.0 or higher to use CakePHP (detected <?= PHP_VERSION ?>).</li>
-        <?php endif; ?>
-
-        <?php if (extension_loaded('mbstring')) : ?>
-            <li class="bullet success">Your version of PHP has the mbstring extension loaded.</li>
-        <?php else : ?>
-            <li class="bullet problem">Your version of PHP does NOT have the mbstring extension loaded.</li>
-        <?php endif; ?>
-
-        <?php if (extension_loaded('openssl')) : ?>
-            <li class="bullet success">Your version of PHP has the openssl extension loaded.</li>
-        <?php elseif (extension_loaded('mcrypt')) : ?>
-            <li class="bullet success">Your version of PHP has the mcrypt extension loaded.</li>
-        <?php else : ?>
-            <li class="bullet problem">Your version of PHP does NOT have the openssl or mcrypt extension loaded.</li>
-        <?php endif; ?>
-
-        <?php if (extension_loaded('intl')) : ?>
-            <li class="bullet success">Your version of PHP has the intl extension loaded.</li>
-        <?php else : ?>
-            <li class="bullet problem">Your version of PHP does NOT have the intl extension loaded.</li>
-        <?php endif; ?>
-        </ul>
+                    <li class="bullet success">Your version of PHP is 5.6.0 or higher (detected 5.6.30).</li>
+        
+                    <li class="bullet success">Your version of PHP has the mbstring extension loaded.</li>
+        
+                    <li class="bullet success">Your version of PHP has the openssl extension loaded.</li>
+        
+                    <li class="bullet success">Your version of PHP has the intl extension loaded.</li>
+                </ul>
     </div>
     <div class="columns large-6">
         <h4>Filesystem</h4>
         <ul>
-        <?php if (is_writable(TMP)) : ?>
-            <li class="bullet success">Your tmp directory is writable.</li>
-        <?php else : ?>
-            <li class="bullet problem">Your tmp directory is NOT writable.</li>
-        <?php endif; ?>
-
-        <?php if (is_writable(LOGS)) : ?>
-            <li class="bullet success">Your logs directory is writable.</li>
-        <?php else : ?>
-            <li class="bullet problem">Your logs directory is NOT writable.</li>
-        <?php endif; ?>
-
-        <?php $settings = Cache::getConfig('_cake_core_'); ?>
-        <?php if (!empty($settings)) : ?>
-            <li class="bullet success">The <em><?= $settings['className'] ?>Engine</em> is being used for core caching. To change the config edit config/app.php</li>
-        <?php else : ?>
-            <li class="bullet problem">Your cache is NOT working. Please check the settings in config/app.php</li>
-        <?php endif; ?>
-        </ul>
+                    <li class="bullet success">Your tmp directory is writable.</li>
+        
+                    <li class="bullet success">Your logs directory is writable.</li>
+        
+                            <li class="bullet success">The <em>Cake\Cache\Engine\FileEngineEngine</em> is being used for core caching. To change the config edit config/app.php</li>
+                </ul>
     </div>
-    <hr />
+    <hr>
 </div>
 
 <div class="row">
     <div class="columns large-6">
         <h4>Database</h4>
-        <?php
-        try {
-            $connection = ConnectionManager::get('default');
-            $connected = $connection->connect();
-        } catch (Exception $connectionError) {
-            $connected = false;
-            $errorMsg = $connectionError->getMessage();
-            if (method_exists($connectionError, 'getAttributes')) :
-                $attributes = $connectionError->getAttributes();
-                if (isset($errorMsg['message'])) :
-                    $errorMsg .= '<br />' . $attributes['message'];
-                endif;
-            endif;
-        }
-        ?>
-        <ul>
-        <?php if ($connected) : ?>
-            <li class="bullet success">CakePHP is able to connect to the database.</li>
-        <?php else : ?>
-            <li class="bullet problem">CakePHP is NOT able to connect to the database.<br /><?= $errorMsg ?></li>
-        <?php endif; ?>
-        </ul>
+                <ul>
+                    <li class="bullet problem">CakePHP is NOT able to connect to the database.<br>Connection to database could not be established: SQLSTATE[HY000] [1045] Access denied for user 'my_app'@'localhost' (using password: YES)</li>
+                </ul>
     </div>
     <div class="columns large-6">
         <h4>DebugKit</h4>
         <ul>
-        <?php if (Plugin::isLoaded('DebugKit')) : ?>
-            <li class="bullet success">DebugKit is loaded.</li>
-        <?php else : ?>
-            <li class="bullet problem">DebugKit is NOT loaded. You need to either install pdo_sqlite, or define the "debug_kit" connection name.</li>
-        <?php endif; ?>
-        </ul>
+                    <li class="bullet success">DebugKit is loaded.</li>
+                </ul>
     </div>
-    <hr />
+    <hr>
 </div>
 
 <div class="row">
@@ -188,11 +137,11 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
     <div class="columns large-12 text-center">
         <h3 class="more">More about Cake</h3>
         <p>
-            CakePHP is a rapid development framework for PHP which uses commonly known design patterns like Front Controller and MVC.<br />
+            CakePHP is a rapid development framework for PHP which uses commonly known design patterns like Front Controller and MVC.<br>
             Our primary goal is to provide a structured framework that enables PHP users at all levels to rapidly develop robust web applications, without any loss to flexibility.
         </p>
     </div>
-    <hr/>
+    <hr>
 </div>
 
 <div class="row">
@@ -272,5 +221,6 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
     </div>
 </div>
 
-</body>
-</html>
+
+
+<div class="selection_bubble_root" style="display: none;"></div></body></html>
