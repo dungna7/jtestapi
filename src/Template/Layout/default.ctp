@@ -28,7 +28,11 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 
     <?= $this->Html->css('base.css') ?>
     <?= $this->Html->css('style.css') ?>
-
+    
+    <?= $this->Html->css('bootstrap.min.css') ?>
+    <?= $this->Html->script('popper.min.js') ?>
+    <?= $this->Html->script('jquery-3.3.1.min.js') ?>
+    <?= $this->Html->script('bootstrap.min.js') ?>
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script') ?>
@@ -40,15 +44,15 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
                 <h1><a href=""><?= $this->fetch('title') ?></a></h1>
             </li>
         </ul>
-        <div class="top-bar-section">
+<!--        <div class="top-bar-section">
             <ul class="right">
                 <li><a target="_blank" href="https://book.cakephp.org/3.0/">Documentation</a></li>
                 <li><a target="_blank" href="https://api.cakephp.org/3.0/">API</a></li>
             </ul>
-        </div>
+        </div>-->
     </nav>
     <?= $this->Flash->render() ?>
-    <div class="container clearfix">
+    <div class=" clearfix">
         <?= $this->fetch('content') ?>
     </div>
     <footer>
