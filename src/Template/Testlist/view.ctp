@@ -7,7 +7,28 @@
 ?>
 <?= $this->Html->css('jquery.dataTables.min.css') ?>
 <?= $this->Html->script('jquery.dataTables.min.js') ?>
-<?= $this->Html->script('testList/view.js') ?>
+<script>
+
+    $(document).ready(function () {
+        var table = $('#example').DataTable({
+//        "processing": true,
+//        "serverSide": true,
+            "ajax": {
+                "url": "/testlist/getQuestionDetail/<?= $testID?>.json",
+            },
+            "columns": [
+                {"data": "questionID"},
+                {"data": "content"},
+                {"data": "choiceA"},
+                {"data": "choiceB"},
+                {"data": "choiceC"},
+                {"data": "choiceD"},
+                {"data": "type"},
+                {"data": "level"},
+            ]
+        });
+    });
+</script>
 <nav class="large-3 medium-3 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
@@ -48,7 +69,7 @@
                     <th>Office</th>
                     <th>Start date</th>
                     <th>Salary</th>
-                     <th>Start date</th>
+                    <th>Start date</th>
                     <th>Salary</th>
                 </tr>
             </thead>
@@ -60,7 +81,7 @@
                     <th>Office</th>
                     <th>Start date</th>
                     <th>Salary</th>
-                     <th>Start date</th>
+                    <th>Start date</th>
                     <th>Salary</th>
                 </tr>
             </tfoot>

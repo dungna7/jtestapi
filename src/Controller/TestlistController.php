@@ -98,7 +98,8 @@ class TestlistController extends AppController
         $this->set([
             'testlist' => $testlist,
             'questions' => $questions,
-            '_serialize' => ['testlist', 'questions']
+             'testID' => $id,
+            '_serialize' => ['testlist', 'questions', 'testID']
         ]);
     }
 
@@ -162,10 +163,11 @@ class TestlistController extends AppController
         $this->set([
             'testlist' => $testlist,
             'questions' => $questions,
-            '_serialize' => ['testlist', 'questions']
+            "testID" =>$id,
+            '_serialize' => ['testlist', 'questions', "testID"]
         ]);
     }
-    public function getQuestionDetail($id){
+    public function getQuestionDetail($id=null){
         $draw = $this->request->getQuery('draw');
 //        $this->request->params['page'] = $draw;
         $testquestion = TableRegistry::get('testquestion');
@@ -184,19 +186,70 @@ class TestlistController extends AppController
             'c' => [
                 'table' => 'questions',
                 'type' => 'INNER',
-                'conditions' => 'Testquestion.questionID = c.id',
+                'conditions' => 'testquestion.questionID = c.id',
             ]
         ])
-        ->where(['Testquestion.testId'=>$id]); 
+        ->where(['testquestion.testID'=>$id]); 
         $recordsTotal = $testDeatail->count();
 //        dd($testDeatail->toArray());
 //        $questions = $this->paginate($testDeatail);
-        $data = [];
-        foreach ($testDeatail as $key => $value) {
-             $data[$key] = array_values($value->toArray());
-        }
+//        $data = [];
+//        foreach ($testDeatail as $key => $value) {
+//             $data[$key] = array_values($value->toArray());
+//        }
         $this->set([
-            'data' =>$data,
+            'data' =>$testDeatail,
+             "draw" => 1,
+            'recordsTotal'=> $recordsTotal,
+             'recordsFiltered' => $recordsTotal,
+            '_serialize' => [ 'draw', 'recordsTotal', 'recordsFiltered','data']
+        ]);
+    }
+     public function getAllQuestionDetail($id=null){
+        $draw = $this->request->getQuery('draw');
+//        $this->request->params['page'] = $draw;
+        $testquestion = TableRegistry::get('questions');
+        $testDeatail =  $testquestion ->find('all')
+        ->select([
+            'questionID'=>'Questions.id',
+            'content'=>'Questions.content',
+            'choiceA'=>'Questions.choiceA',
+            'choiceB'=>'Questions.choiceB',
+            'choiceC'=>'Questions.choiceC',
+            'choiceD'=>'Questions.choiceD',
+            'type'=>'Questions.type',
+            'level'=>'Questions.level',
+        ]); 
+        $recordsTotal = $testDeatail->count();
+//        dd($testDeatail->toArray());
+//        $questions = $this->paginate($testDeatail);
+//        $data = [];
+//        foreach ($testDeatail as $key => $value) {
+//             $data[$key] = array_values($value->toArray());
+//        }
+        $testquestionRegisted = TableRegistry::get('testquestion');
+        $testDeatailRegisted =  $testquestionRegisted ->find('all')
+        ->select([
+            "regist = 1",
+            'questionID'=>'c.id',
+            'content'=>'c.content',
+            'choiceA'=>'c.choiceA',
+            'choiceB'=>'c.choiceB',
+            'choiceC'=>'c.choiceC',
+            'choiceD'=>'c.choiceD',
+            'type'=>'c.type',
+            'level'=>'c.level',
+        ])
+        ->join([
+            'c' => [
+                'table' => 'questions',
+                'type' => 'INNER',
+                'conditions' => 'testquestion.questionID = c.id',
+            ]
+        ])
+        ->where(['testquestion.testID'=>$id]);
+        $this->set([
+            'data' =>$testDeatail,
              "draw" => 1,
             'recordsTotal'=> $recordsTotal,
              'recordsFiltered' => $recordsTotal,

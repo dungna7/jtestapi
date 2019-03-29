@@ -6,11 +6,21 @@
 
 
 $(document).ready(function() {
-    $('#example').DataTable( {
+     var table = $('#example').DataTable( {
 //        "processing": true,
 //        "serverSide": true,
         "ajax": {
             "url":"/testlist/getQuestionDetail/2.json",
-        }
+        },
+         "columns": [
+            { "data": "questionID" },
+            { "data": "content" },
+            { "data": "choiceA" },
+            { "data": "choiceB" },
+            { "data": "choiceC" },
+            { "data": "choiceD" },
+            { "data": "type" },
+            { "data": "level" },
+        ]
     } );
 } );
