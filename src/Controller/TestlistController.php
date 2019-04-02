@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use \Cake\ORM\TableRegistry;
+use PHPExcel;
+use PHPExcel_IOFactory;
 
 /**
  * Testlist Controller
@@ -286,10 +288,9 @@ class TestlistController extends AppController {
                 $uploadPath = '../uploads/files/';
                 $uploadFile = $uploadPath . $fileName;
                 if (move_uploaded_file($data['file']['tmp_name'], $uploadFile)) {
-
                     $uploadData = $filequestion->newEntity();
                     $uploadData->name = $fileName;
-                    $uploadData->path = $uploadPath;
+                    $uploadData->path = $uploadFile;
                     $uploadData->created = date("Y-m-d H:i:s");
                     $uploadData->modified = date("Y-m-d H:i:s");
                     if ($filequestion->save($uploadData)) {
@@ -297,17 +298,49 @@ class TestlistController extends AppController {
                     } else {
                         $this->Flash->error(__('Unable to upload file, please try again.'));
                     }
-                    $dataexe = new Spreadsheet_Excel_Reader($uploadFile, true);
-                    $temp = $dataexe->dumptoarray();
-                    $this->log($temp, 'debug');
+//                    $dataexe = new Spreadsheet_Excel_Reader($uploadFile, true);
+//                    $temp = $dataexe->dumptoarray();
+//                    var_dump($temp);
                 } else {
                     $this->Flash->error(__('Unable to upload file, please try again.'));
+                }
+                $tmpfname = $data['file']['tmp_name'];
+                $excelReader = PHPExcel_IOFactory::createReaderForFile($tmpfname);
+                $excelObj = $excelReader->load($tmpfname);
+                $worksheet = $excelObj->getSheet(0);
+                $lastRow = $worksheet->getHighestRow();
+                $questions = TableRegistry::get('questions');
+                try {
+                    $questions->getConnection()->begin();
+                    for ($row = 1; $row <= $lastRow; $row++) {
+                        $question = $questions->newEntity();
+                        $question->content = $worksheet->getCell('B' . $row)->getValue();
+                        $question->choiceA = $worksheet->getCell('C' . $row)->getValue();
+                        $question->choiceB = $worksheet->getCell('D' . $row)->getValue();
+                        $question->choiceC = $worksheet->getCell('E' . $row)->getValue();
+                        $question->choiceD = $worksheet->getCell('F' . $row)->getValue();
+                        $question->type = intval($worksheet->getCell('G' . $row)->getValue());
+                        $question->level = intval($worksheet->getCell('H' . $row)->getValue());
+                        $question->correctAnswer = intval($worksheet->getCell('I' . $row)->getValue());
+                        if ($questions->save($question)) {
+//                            var_dump($question);die;
+                            $result['errorFlg'] = false;
+                            $result['message'] = "";
+                        }
+                        $questions->getConnection()->commit();
+                    }
+                } catch (\Exception $exc) {
+                    $questions->getConnection()->rollback();
+                    $result['errorFlg'] = true;
+                    $result['message'] = $exc->getMessage();
+                     var_dump($exc->getMessage());die;
+//                    return $exc->getMessage();
                 }
             } else {
                 $this->Flash->error(__('Please choose a file to upload.'));
             }
         }
-        
+
         $this->set('uploadData', $uploadData);
 
         $files = $filequestion->find('all', ['order' => ['filequestion.created' => 'DESC']]);
@@ -318,27 +351,27 @@ class TestlistController extends AppController {
     }
 
     public function import() {
-            if ($_FILES['file']['csv']) {
-                $filename = explode('.', $_FILES['file']['csv']);
-                debug($filename);
-                if ($filename[1] == 'csv') {
+        if ($_FILES['file']['csv']) {
+            $filename = explode('.', $_FILES['file']['csv']);
+            debug($filename);
+            if ($filename[1] == 'csv') {
 
-                    $handle = fopen($_FILES['file']['csv'], "r");
-                    while ($data = fgetcsv($handle)) {
-                        $item1 = $data[0];
+                $handle = fopen($_FILES['file']['csv'], "r");
+                while ($data = fgetcsv($handle)) {
+                    $item1 = $data[0];
 
-                        $data = array(
-                            'fieldName' => $item1
-                        );
-                        //  $item2 = $data[1];
-                        //  $item3 = $data[2];
-                        //  $item4 = $data[3];
-                        $Applicant = $this->Applicants->newEntity($data);
-                        $this->Applicants->save($Applicant);
-                    }
-                    fclose($handle);
+                    $data = array(
+                        'fieldName' => $item1
+                    );
+                    //  $item2 = $data[1];
+                    //  $item3 = $data[2];
+                    //  $item4 = $data[3];
+                    $Applicant = $this->Applicants->newEntity($data);
+                    $this->Applicants->save($Applicant);
                 }
+                fclose($handle);
             }
+        }
         $this->render(FALSE);
     }
 

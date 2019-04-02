@@ -29,6 +29,7 @@ class Filequestion extends Entity
         'name' => true,
         'authorId' => true,
         'level' => true,
+        'path' => true,
         'created' => true,
         'type' => true
     ];
