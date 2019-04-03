@@ -94,7 +94,7 @@ class TestlistController extends AppController {
                         'conditions' => 'Testquestion.questionID = c.id',
                     ]
                 ])
-                ->where(['Testquestion.testId' => $id]);
+                ->where(['Testquestion.testID' => $id]);
         $questions = $this->paginate($testDeatail);
         $this->set([
             'testlist' => $testlist,
