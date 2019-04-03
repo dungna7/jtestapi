@@ -10,11 +10,15 @@
 <script>
 
     $(document).ready(function () {
+        var rootFolder = "";
+        if(window.location.href.indexOf("jtestapi") != -1){
+            rootFolder = "/jtestapi";
+        }
         var table = $('#example').DataTable({
 //        "processing": true,
 //        "serverSide": true,
             "ajax": {
-                "url": "/testlist/getQuestionDetail/<?= $testID?>.json",
+                "url": rootFolder+"/testlist/getQuestionDetail/<?= $testID?>.json",
             },
             "columns": [
                 {"data": "questionID"},
