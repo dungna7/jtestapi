@@ -149,14 +149,14 @@ class TestlistController extends AppController {
         $testquestion = TableRegistry::get('questions');
         $testDeatail = $testquestion->find('all')
                 ->select([
-            'questionID' => 'Questions.id',
-            'content' => 'Questions.content',
-            'choiceA' => 'Questions.choiceA',
-            'choiceB' => 'Questions.choiceB',
-            'choiceC' => 'Questions.choiceC',
-            'choiceD' => 'Questions.choiceD',
-            'type' => 'Questions.type',
-            'level' => 'Questions.level',
+            'questionID' => 'questions.id',
+            'content' => 'questions.content',
+            'choiceA' => 'questions.choiceA',
+            'choiceB' => 'questions.choiceB',
+            'choiceC' => 'questions.choiceC',
+            'choiceD' => 'questions.choiceD',
+            'type' => 'questions.type',
+            'level' => 'questions.level',
         ]);
         $questions = $this->paginate($testDeatail);
         $this->set([
@@ -213,14 +213,14 @@ class TestlistController extends AppController {
         $testquestion = TableRegistry::get('questions');
         $testDeatail = $testquestion->find('all')
                 ->select([
-            'questionID' => 'Questions.id',
-            'content' => 'Questions.content',
-            'choiceA' => 'Questions.choiceA',
-            'choiceB' => 'Questions.choiceB',
-            'choiceC' => 'Questions.choiceC',
-            'choiceD' => 'Questions.choiceD',
-            'type' => 'Questions.type',
-            'level' => 'Questions.level',
+            'questionID' => 'questions.id',
+            'content' => 'questions.content',
+            'choiceA' => 'questions.choiceA',
+            'choiceB' => 'questions.choiceB',
+            'choiceC' => 'questions.choiceC',
+            'choiceD' => 'questions.choiceD',
+            'type' => 'questions.type',
+            'level' => 'questions.level',
         ]);
         $recordsTotal = $testDeatail->count();
 //        dd($testDeatail->toArray());
