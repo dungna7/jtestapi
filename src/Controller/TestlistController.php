@@ -287,23 +287,6 @@ class TestlistController extends AppController {
                 $fileName = $data['file']['name'];
                 $uploadPath = '../uploads/files/';
                 $uploadFile = $uploadPath . $fileName;
-                if (move_uploaded_file($data['file']['tmp_name'], $uploadFile)) {
-                    $uploadData = $filequestion->newEntity();
-                    $uploadData->name = $fileName;
-                    $uploadData->path = $uploadFile;
-                    $uploadData->created = date("Y-m-d H:i:s");
-                    $uploadData->modified = date("Y-m-d H:i:s");
-                    if ($filequestion->save($uploadData)) {
-                        $this->Flash->success(__('File has been uploaded and inserted successfully.'));
-                    } else {
-                        $this->Flash->error(__('Unable to upload file, please try again.'));
-                    }
-//                    $dataexe = new Spreadsheet_Excel_Reader($uploadFile, true);
-//                    $temp = $dataexe->dumptoarray();
-//                    var_dump($temp);
-                } else {
-                    $this->Flash->error(__('Unable to upload file, please try again.'));
-                }
                 $tmpfname = $data['file']['tmp_name'];
                 $excelReader = PHPExcel_IOFactory::createReaderForFile($tmpfname);
                 $excelObj = $excelReader->load($tmpfname);
@@ -333,8 +316,26 @@ class TestlistController extends AppController {
                     $questions->getConnection()->rollback();
                     $result['errorFlg'] = true;
                     $result['message'] = $exc->getMessage();
-                     var_dump($exc->getMessage());die;
+                    var_dump($exc->getMessage());
+                    die;
 //                    return $exc->getMessage();
+                }
+                if (move_uploaded_file($data['file']['tmp_name'], $uploadFile)) {
+                    $uploadData = $filequestion->newEntity();
+                    $uploadData->name = $fileName;
+                    $uploadData->path = $uploadFile;
+                    $uploadData->created = date("Y-m-d H:i:s");
+                    $uploadData->modified = date("Y-m-d H:i:s");
+                    if ($filequestion->save($uploadData)) {
+                        $this->Flash->success(__('File has been uploaded and inserted successfully.'));
+                    } else {
+                        $this->Flash->error(__('Unable to upload file, please try again.'));
+                    }
+//                    $dataexe = new Spreadsheet_Excel_Reader($uploadFile, true);
+//                    $temp = $dataexe->dumptoarray();
+//                    var_dump($temp);
+                } else {
+                    $this->Flash->error(__('Unable to upload file, please try again.'));
                 }
             } else {
                 $this->Flash->error(__('Please choose a file to upload.'));
