@@ -1,10 +1,11 @@
 <?php
+
 namespace App\Controller;
 
-use App\Controller\AppController;
-use \Cake\ORM\TableRegistry;
+use Cake\ORM\TableRegistry;
+
 /**
- * Testlist Controller
+ * Testlist Controller.
  *
  * @property \App\Model\Table\TestlistTable $Testlist
  *
@@ -12,7 +13,6 @@ use \Cake\ORM\TableRegistry;
  */
 class TestlistController extends AppController
 {
-
     public $paginate = [
         'limit' => 10,
     ];
@@ -22,14 +22,35 @@ class TestlistController extends AppController
         parent::initialize();
         $this->loadComponent('Paginator');
     }
+
+    // public function isAuthorized($user)
+    // {
+    //     $action = $this->request->getParam('action');
+    //     // The add and tags actions are always allowed to logged in users.
+    //     if (in_array($action, ['add'])) {
+    //         return true;
+    //     }
+
+    //     // All other actions require a slug.
+    //     $slug = $this->request->getParam('pass.0');
+    //     if (!$slug) {
+    //         return false;
+    //     }
+
+    //     // Check that the article belongs to the current user.
+    //     $article = $this->Testlist->findBySlug($slug)->first();
+
+    //     return $article->user_id === $user['id'];
+    // }
+
     /**
-     * Index method
+     * Index method.
      *
      * @return \Cake\Http\Response|void
      */
     public function index()
     {
-         $testlist = $this->Testlist
+        $testlist = $this->Testlist
         ->find('all')
         ->select($this->Testlist);
 //        ->select([
@@ -53,60 +74,63 @@ class TestlistController extends AppController
 //                'type' => 'INNER',
 //                'conditions' => 'b.questionID = c.id',
 //            ]
-//        ]); 
+//        ]);
+// dd($this->request());
         $testlist = $this->paginate($testlist);
         $this->set([
             'testlist' => $testlist,
-            '_serialize' => ['testlist']
+            '_serialize' => ['testlist'],
         ]);
 //        $this->set(compact('testlist'));
     }
 
     /**
-     * View method
+     * View method.
      *
-     * @param string|null $id Testlist id.
+     * @param string|null $id testlist id
+     *
      * @return \Cake\Http\Response|void
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     *
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException when record not found
      */
     public function view($id = null)
     {
         $testlist = $this->Testlist->get($id, [
-            'contain' => []
+            'contain' => [],
         ]);
         $testquestion = TableRegistry::get('testquestion');
-        $testDeatail =  $testquestion ->find('all')
+        $testDeatail = $testquestion->find('all')
         ->select([
-            'questionID'=>'c.id',
-            'content'=>'c.content',
-            'choiceA'=>'c.choiceA',
-            'choiceB'=>'c.choiceB',
-            'choiceC'=>'c.choiceC',
-            'choiceD'=>'c.choiceD',
-            'type'=>'c.type',
-            'level'=>'c.level',
+            'questionID' => 'c.id',
+            'content' => 'c.content',
+            'choiceA' => 'c.choiceA',
+            'choiceB' => 'c.choiceB',
+            'choiceC' => 'c.choiceC',
+            'choiceD' => 'c.choiceD',
+            'type' => 'c.type',
+            'level' => 'c.level',
         ])
         ->join([
             'c' => [
                 'table' => 'questions',
                 'type' => 'INNER',
                 'conditions' => 'Testquestion.questionID = c.id',
-            ]
+            ],
         ])
-        ->where(['Testquestion.testId'=>$id]); 
+        ->where(['Testquestion.testId' => $id]);
         $questions = $this->paginate($testDeatail);
         $this->set([
             'testlist' => $testlist,
             'questions' => $questions,
              'testID' => $id,
-            '_serialize' => ['testlist', 'questions', 'testID']
+            '_serialize' => ['testlist', 'questions', 'testID'],
         ]);
     }
 
     /**
-     * Add method   
+     * Add method.
      *
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|null redirects on successful add, renders view otherwise
      */
     public function add()
     {
@@ -122,21 +146,23 @@ class TestlistController extends AppController
         }
         $this->set([
             'testlist' => $testlist,
-            '_serialize' => ['testlist']
+            '_serialize' => ['testlist'],
         ]);
     }
 
     /**
-     * Edit method
+     * Edit method.
      *
-     * @param string|null $id Testlist id.
-     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     * @param string|null $id testlist id
+     *
+     * @return \Cake\Http\Response|null redirects on successful edit, renders view otherwise
+     *
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException when record not found
      */
     public function edit($id = null)
     {
         $testlist = $this->Testlist->get($id, [
-            'contain' => []
+            'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $testlist = $this->Testlist->patchEntity($testlist, $this->request->getData());
@@ -148,48 +174,50 @@ class TestlistController extends AppController
             $this->Flash->error(__('The testlist could not be saved. Please, try again.'));
         }
         $testquestion = TableRegistry::get('questions');
-        $testDeatail =  $testquestion ->find('all')
+        $testDeatail = $testquestion->find('all')
         ->select([
-            'questionID'=>'Questions.id',
-            'content'=>'Questions.content',
-            'choiceA'=>'Questions.choiceA',
-            'choiceB'=>'Questions.choiceB',
-            'choiceC'=>'Questions.choiceC',
-            'choiceD'=>'Questions.choiceD',
-            'type'=>'Questions.type',
-            'level'=>'Questions.level',
-        ]); 
+            'questionID' => 'Questions.id',
+            'content' => 'Questions.content',
+            'choiceA' => 'Questions.choiceA',
+            'choiceB' => 'Questions.choiceB',
+            'choiceC' => 'Questions.choiceC',
+            'choiceD' => 'Questions.choiceD',
+            'type' => 'Questions.type',
+            'level' => 'Questions.level',
+        ]);
         $questions = $this->paginate($testDeatail);
         $this->set([
             'testlist' => $testlist,
             'questions' => $questions,
-            "testID" =>$id,
-            '_serialize' => ['testlist', 'questions', "testID"]
+            'testID' => $id,
+            '_serialize' => ['testlist', 'questions', 'testID'],
         ]);
     }
-    public function getQuestionDetail($id=null){
+
+    public function getQuestionDetail($id = null)
+    {
         $draw = $this->request->getQuery('draw');
 //        $this->request->params['page'] = $draw;
         $testquestion = TableRegistry::get('testquestion');
-        $testDeatail =  $testquestion ->find('all')
+        $testDeatail = $testquestion->find('all')
         ->select([
-            'questionID'=>'c.id',
-            'content'=>'c.content',
-            'choiceA'=>'c.choiceA',
-            'choiceB'=>'c.choiceB',
-            'choiceC'=>'c.choiceC',
-            'choiceD'=>'c.choiceD',
-            'type'=>'c.type',
-            'level'=>'c.level',
+            'questionID' => 'c.id',
+            'content' => 'c.content',
+            'choiceA' => 'c.choiceA',
+            'choiceB' => 'c.choiceB',
+            'choiceC' => 'c.choiceC',
+            'choiceD' => 'c.choiceD',
+            'type' => 'c.type',
+            'level' => 'c.level',
         ])
         ->join([
             'c' => [
                 'table' => 'questions',
                 'type' => 'INNER',
                 'conditions' => 'testquestion.questionID = c.id',
-            ]
+            ],
         ])
-        ->where(['testquestion.testID'=>$id]); 
+        ->where(['testquestion.testID' => $id]);
         $recordsTotal = $testDeatail->count();
 //        dd($testDeatail->toArray());
 //        $questions = $this->paginate($testDeatail);
@@ -198,28 +226,30 @@ class TestlistController extends AppController
 //             $data[$key] = array_values($value->toArray());
 //        }
         $this->set([
-            'data' =>$testDeatail,
-             "draw" => 1,
-            'recordsTotal'=> $recordsTotal,
+            'data' => $testDeatail,
+             'draw' => 1,
+            'recordsTotal' => $recordsTotal,
              'recordsFiltered' => $recordsTotal,
-            '_serialize' => [ 'draw', 'recordsTotal', 'recordsFiltered','data']
+            '_serialize' => ['draw', 'recordsTotal', 'recordsFiltered', 'data'],
         ]);
     }
-     public function getAllQuestionDetail($id=null){
+
+    public function getAllQuestionDetail($id = null)
+    {
         $draw = $this->request->getQuery('draw');
 //        $this->request->params['page'] = $draw;
         $testquestion = TableRegistry::get('questions');
-        $testDeatail =  $testquestion ->find('all')
+        $testDeatail = $testquestion->find('all')
         ->select([
-            'questionID'=>'Questions.id',
-            'content'=>'Questions.content',
-            'choiceA'=>'Questions.choiceA',
-            'choiceB'=>'Questions.choiceB',
-            'choiceC'=>'Questions.choiceC',
-            'choiceD'=>'Questions.choiceD',
-            'type'=>'Questions.type',
-            'level'=>'Questions.level',
-        ]); 
+            'questionID' => 'Questions.id',
+            'content' => 'Questions.content',
+            'choiceA' => 'Questions.choiceA',
+            'choiceB' => 'Questions.choiceB',
+            'choiceC' => 'Questions.choiceC',
+            'choiceD' => 'Questions.choiceD',
+            'type' => 'Questions.type',
+            'level' => 'Questions.level',
+        ]);
         $recordsTotal = $testDeatail->count();
 //        dd($testDeatail->toArray());
 //        $questions = $this->paginate($testDeatail);
@@ -228,40 +258,43 @@ class TestlistController extends AppController
 //             $data[$key] = array_values($value->toArray());
 //        }
         $testquestionRegisted = TableRegistry::get('testquestion');
-        $testDeatailRegisted =  $testquestionRegisted ->find('all')
+        $testDeatailRegisted = $testquestionRegisted->find('all')
         ->select([
-            "regist = 1",
-            'questionID'=>'c.id',
-            'content'=>'c.content',
-            'choiceA'=>'c.choiceA',
-            'choiceB'=>'c.choiceB',
-            'choiceC'=>'c.choiceC',
-            'choiceD'=>'c.choiceD',
-            'type'=>'c.type',
-            'level'=>'c.level',
+            'regist = 1',
+            'questionID' => 'c.id',
+            'content' => 'c.content',
+            'choiceA' => 'c.choiceA',
+            'choiceB' => 'c.choiceB',
+            'choiceC' => 'c.choiceC',
+            'choiceD' => 'c.choiceD',
+            'type' => 'c.type',
+            'level' => 'c.level',
         ])
         ->join([
             'c' => [
                 'table' => 'questions',
                 'type' => 'INNER',
                 'conditions' => 'testquestion.questionID = c.id',
-            ]
+            ],
         ])
-        ->where(['testquestion.testID'=>$id]);
+        ->where(['testquestion.testID' => $id]);
         $this->set([
-            'data' =>$testDeatail,
-             "draw" => 1,
-            'recordsTotal'=> $recordsTotal,
+            'data' => $testDeatail,
+             'draw' => 1,
+            'recordsTotal' => $recordsTotal,
              'recordsFiltered' => $recordsTotal,
-            '_serialize' => [ 'draw', 'recordsTotal', 'recordsFiltered','data']
+            '_serialize' => ['draw', 'recordsTotal', 'recordsFiltered', 'data'],
         ]);
     }
+
     /**
-     * Delete method
+     * Delete method.
      *
-     * @param string|null $id Testlist id.
-     * @return \Cake\Http\Response|null Redirects to index.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     * @param string|null $id testlist id
+     *
+     * @return \Cake\Http\Response|null redirects to index
+     *
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException when record not found
      */
     public function delete($id = null)
     {

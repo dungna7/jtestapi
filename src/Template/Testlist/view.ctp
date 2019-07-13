@@ -29,7 +29,7 @@
         });
     });
 </script>
-<nav class="large-3 medium-3 columns" id="actions-sidebar">
+<nav class="large-3 medium-3 columns" >
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
         <li><?= $this->Html->link(__('Edit Testlist'), ['action' => 'edit', $testlist->id]) ?> </li>
@@ -38,7 +38,7 @@
         <li><?= $this->Html->link(__('New Testlist'), ['action' => 'add']) ?> </li>
     </ul>
 </nav>
-<div class="testlist view large-9 medium-9 columns content">
+<div class="testlist view large-9 medium-9 columns">
     <h3><?= h($testlist->name) ?></h3>
     <table class="vertical-table">
         <tr>

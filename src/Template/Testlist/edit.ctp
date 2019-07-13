@@ -66,7 +66,7 @@
         );
     });
 </script>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
+<nav class="large-3 medium-4 columns" >
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
         <li><?= $this->Form->postLink(
@@ -78,7 +78,7 @@
         <li><?= $this->Html->link(__('List Testlist'), ['action' => 'index']) ?></li>
     </ul>
 </nav>
-<div class="testlist form large-9 medium-8 columns content">
+<div class="testlist form large-9 medium-8 columns ">
     <?= $this->Form->create($testlist) ?>
     <fieldset>
         <legend><?= __('Edit Testlist') ?></legend>
