@@ -2,14 +2,8 @@
 
 namespace App\Controller;
 
-<<<<<<< HEAD
 use Cake\ORM\TableRegistry;
-=======
-use App\Controller\AppController;
-use \Cake\ORM\TableRegistry;
-use PHPExcel;
 use PHPExcel_IOFactory;
->>>>>>> b39989c2bf2460a289529ffb30a81dd04b85b906
 
 /**
  * Testlist Controller.
@@ -18,18 +12,14 @@ use PHPExcel_IOFactory;
  *
  * @method \App\Model\Entity\Testlist[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
-<<<<<<< HEAD
 class TestlistController extends AppController
 {
-=======
-class TestlistController extends AppController {
-
->>>>>>> b39989c2bf2460a289529ffb30a81dd04b85b906
     public $paginate = [
         'limit' => 10,
     ];
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
         $this->loadComponent('Paginator');
     }
@@ -39,8 +29,8 @@ class TestlistController extends AppController {
      *
      * @return \Cake\Http\Response|void
      */
-
-    public function index() {
+    public function index()
+    {
         $testlist = $this->Testlist
                 ->find('all')
                 ->select($this->Testlist);
@@ -66,7 +56,7 @@ class TestlistController extends AppController {
 //                'conditions' => 'b.questionID = c.id',
 //            ]
 //        ]);
-// dd($this->request());
+        // dd($this->request());
         $testlist = $this->paginate($testlist);
         $this->set([
             'testlist' => $testlist,
@@ -84,7 +74,8 @@ class TestlistController extends AppController {
      *
      * @throws \Cake\Datasource\Exception\RecordNotFoundException when record not found
      */
-    public function view($id = null) {
+    public function view($id = null)
+    {
         $testlist = $this->Testlist->get($id, [
             'contain' => [],
         ]);
@@ -105,7 +96,7 @@ class TestlistController extends AppController {
                         'table' => 'questions',
                         'type' => 'INNER',
                         'conditions' => 'testquestion.questionID = c.id',
-                    ]
+                    ],
                 ])
                 ->where(['testquestion.testID' => $id]);
         $questions = $this->paginate($testDeatail);
@@ -113,7 +104,7 @@ class TestlistController extends AppController {
             'testlist' => $testlist,
             'questions' => $questions,
             'testID' => $id,
-            '_serialize' => ['testlist', 'questions', 'testID']
+            '_serialize' => ['testlist', 'questions', 'testID'],
         ]);
     }
 
@@ -122,7 +113,8 @@ class TestlistController extends AppController {
      *
      * @return \Cake\Http\Response|null redirects on successful add, renders view otherwise
      */
-    public function add() {
+    public function add()
+    {
         $testlist = $this->Testlist->newEntity();
         if ($this->request->is('post')) {
             $testlist = $this->Testlist->patchEntity($testlist, $this->request->getData());
@@ -148,7 +140,8 @@ class TestlistController extends AppController {
      *
      * @throws \Cake\Datasource\Exception\RecordNotFoundException when record not found
      */
-    public function edit($id = null) {
+    public function edit($id = null)
+    {
         $testlist = $this->Testlist->get($id, [
             'contain' => [],
         ]);
@@ -177,13 +170,14 @@ class TestlistController extends AppController {
         $this->set([
             'testlist' => $testlist,
             'questions' => $questions,
-            "testID" => $id,
+            'testID' => $id,
             'uploadData' => '',
-            '_serialize' => ['testlist', 'questions', "testID", 'uploadData']
+            '_serialize' => ['testlist', 'questions', 'testID', 'uploadData'],
         ]);
     }
 
-    public function getQuestionDetail($id = null) {
+    public function getQuestionDetail($id = null)
+    {
         $draw = $this->request->getQuery('draw');
 //        $this->request->params['page'] = $draw;
         $testquestion = TableRegistry::get('testquestion');
@@ -203,7 +197,7 @@ class TestlistController extends AppController {
                         'table' => 'questions',
                         'type' => 'INNER',
                         'conditions' => 'testquestion.questionID = c.id',
-                    ]
+                    ],
                 ])
                 ->where(['testquestion.testID' => $id]);
         $recordsTotal = $testDeatail->count();
@@ -215,14 +209,15 @@ class TestlistController extends AppController {
 //        }
         $this->set([
             'data' => $testDeatail,
-            "draw" => 1,
+            'draw' => 1,
             'recordsTotal' => $recordsTotal,
             'recordsFiltered' => $recordsTotal,
-            '_serialize' => ['draw', 'recordsTotal', 'recordsFiltered', 'data']
+            '_serialize' => ['draw', 'recordsTotal', 'recordsFiltered', 'data'],
         ]);
     }
 
-    public function getAllQuestionDetail($id = null) {
+    public function getAllQuestionDetail($id = null)
+    {
         $draw = $this->request->getQuery('draw');
 //        $this->request->params['page'] = $draw;
         $testquestion = TableRegistry::get('questions');
@@ -247,7 +242,7 @@ class TestlistController extends AppController {
         $testquestionRegisted = TableRegistry::get('testquestion');
         $testDeatailRegisted = $testquestionRegisted->find('all')
                 ->select([
-                    "regist = 1",
+                    'regist = 1',
                     'questionID' => 'c.id',
                     'content' => 'c.content',
                     'choiceA' => 'c.choiceA',
@@ -262,15 +257,15 @@ class TestlistController extends AppController {
                         'table' => 'questions',
                         'type' => 'INNER',
                         'conditions' => 'testquestion.questionID = c.id',
-                    ]
+                    ],
                 ])
                 ->where(['testquestion.testID' => $id]);
         $this->set([
             'data' => $testDeatail,
-            "draw" => 1,
+            'draw' => 1,
             'recordsTotal' => $recordsTotal,
             'recordsFiltered' => $recordsTotal,
-            '_serialize' => ['draw', 'recordsTotal', 'recordsFiltered', 'data']
+            '_serialize' => ['draw', 'recordsTotal', 'recordsFiltered', 'data'],
         ]);
     }
 
@@ -283,7 +278,8 @@ class TestlistController extends AppController {
      *
      * @throws \Cake\Datasource\Exception\RecordNotFoundException when record not found
      */
-    public function delete($id = null) {
+    public function delete($id = null)
+    {
         $this->request->allowMethod(['post', 'delete']);
         $testlist = $this->Testlist->get($id);
         if ($this->Testlist->delete($testlist)) {
@@ -295,7 +291,8 @@ class TestlistController extends AppController {
         return $this->redirect(['action' => 'index']);
     }
 
-    public function uploadTestQuestions($param = null) {
+    public function uploadTestQuestions($param = null)
+    {
         $uploadData = '';
         $filequestion = TableRegistry::get('filequestion');
         $data = $this->request->getData();
@@ -303,7 +300,7 @@ class TestlistController extends AppController {
             if (!empty($data['file']['name'])) {
                 $fileName = $data['file']['name'];
                 $uploadPath = '../uploads/files/';
-                $uploadFile = $uploadPath . $fileName;
+                $uploadFile = $uploadPath.$fileName;
                 $tmpfname = $data['file']['tmp_name'];
                 $excelReader = PHPExcel_IOFactory::createReaderForFile($tmpfname);
                 $excelObj = $excelReader->load($tmpfname);
@@ -312,20 +309,20 @@ class TestlistController extends AppController {
                 $questions = TableRegistry::get('questions');
                 try {
                     $questions->getConnection()->begin();
-                    for ($row = 1; $row <= $lastRow; $row++) {
+                    for ($row = 1; $row <= $lastRow; ++$row) {
                         $question = $questions->newEntity();
-                        $question->content = $worksheet->getCell('B' . $row)->getValue();
-                        $question->choiceA = $worksheet->getCell('C' . $row)->getValue();
-                        $question->choiceB = $worksheet->getCell('D' . $row)->getValue();
-                        $question->choiceC = $worksheet->getCell('E' . $row)->getValue();
-                        $question->choiceD = $worksheet->getCell('F' . $row)->getValue();
-                        $question->type = intval($worksheet->getCell('G' . $row)->getValue());
-                        $question->level = intval($worksheet->getCell('H' . $row)->getValue());
-                        $question->correctAnswer = intval($worksheet->getCell('I' . $row)->getValue());
+                        $question->content = $worksheet->getCell('B'.$row)->getValue();
+                        $question->choiceA = $worksheet->getCell('C'.$row)->getValue();
+                        $question->choiceB = $worksheet->getCell('D'.$row)->getValue();
+                        $question->choiceC = $worksheet->getCell('E'.$row)->getValue();
+                        $question->choiceD = $worksheet->getCell('F'.$row)->getValue();
+                        $question->type = intval($worksheet->getCell('G'.$row)->getValue());
+                        $question->level = intval($worksheet->getCell('H'.$row)->getValue());
+                        $question->correctAnswer = intval($worksheet->getCell('I'.$row)->getValue());
                         if ($questions->save($question)) {
 //                            var_dump($question);die;
                             $result['errorFlg'] = false;
-                            $result['message'] = "";
+                            $result['message'] = '';
                         }
                         $questions->getConnection()->commit();
                     }
@@ -341,8 +338,8 @@ class TestlistController extends AppController {
                     $uploadData = $filequestion->newEntity();
                     $uploadData->name = $fileName;
                     $uploadData->path = $uploadFile;
-                    $uploadData->created = date("Y-m-d H:i:s");
-                    $uploadData->modified = date("Y-m-d H:i:s");
+                    $uploadData->created = date('Y-m-d H:i:s');
+                    $uploadData->modified = date('Y-m-d H:i:s');
                     if ($filequestion->save($uploadData)) {
                         $this->Flash->success(__('File has been uploaded and inserted successfully.'));
                     } else {
@@ -365,21 +362,22 @@ class TestlistController extends AppController {
         $filesRowNum = $files->count();
         $this->set('files', $files);
         $this->set('filesRowNum', $filesRowNum);
+
         return $this->redirect(['action' => 'edit', $param]);
     }
 
-    public function import() {
+    public function import()
+    {
         if ($_FILES['file']['csv']) {
             $filename = explode('.', $_FILES['file']['csv']);
             debug($filename);
             if ($filename[1] == 'csv') {
-
-                $handle = fopen($_FILES['file']['csv'], "r");
+                $handle = fopen($_FILES['file']['csv'], 'r');
                 while ($data = fgetcsv($handle)) {
                     $item1 = $data[0];
 
                     $data = array(
-                        'fieldName' => $item1
+                        'fieldName' => $item1,
                     );
                     //  $item2 = $data[1];
                     //  $item3 = $data[2];
@@ -390,7 +388,6 @@ class TestlistController extends AppController {
                 fclose($handle);
             }
         }
-        $this->render(FALSE);
+        $this->render(false);
     }
-
 }
